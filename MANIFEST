@@ -1,0 +1,11 @@
+Changes
+COPYING
+COPYRIGHT
+Makefile.PL
+MANIFEST
+QuickCam.pm
+QuickCam.xs
+README
+perlobject.map
+test.pl
+typemap
