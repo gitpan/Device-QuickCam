@@ -16,7 +16,7 @@ require DynaLoader;
 
 @ISA = qw(Exporter DynaLoader);
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 #And when I boot it up...
 bootstrap Device::QuickCam $VERSION;
@@ -49,7 +49,9 @@ This module allows access to the Connectix/Logitech QuickCam. This module uses l
 
 =head1 REQUIREMENTS
 
-You'll need :
+You'll need 
+
+=over 4
 
 =item root
 
@@ -72,7 +74,11 @@ There are FAQs on how to get these cameras working in Linux. (working)
 
 Well, It helps anyway. I have no idea how this might work on other platforms altho libcqcam supports a few.
 
+=back
+
 =head1 FUNCTIONS
+
+=over 4
 
 =item grab()
 
@@ -125,6 +131,22 @@ This function allows you to toggle debug info. 0 is off, 1 is on. Default is off
 =item set_file(string)
 
 This functions allows you to set a filename for output. 
+By not setting a filename, you force output to STDOUT.
+
+=item set_http(int)
+
+This function allows you to toggle HTTP Support. 0 is off, 1 is on. Default is off.
+
+=back
+
+=head1 NOTES
+
+I included libcqcam in this archive. You need to build this yourself before installing this module.
+Go into the libcqcam directory and type : 
+
+make
+
+Then copy libcqcam.a to a directory in which is listed in ld.so.conf (I used /usr/lib) and run ldconfig. Then you should be able to make this module.
 
 =head1 EXPORT
 

@@ -18,7 +18,7 @@ extern "C" {
 #include "camera.h"
 #include "imager.h"
 
-#include "rcfile.h"
+//#include "rcfile.h"
 
 #include "config.h"
 
@@ -36,7 +36,9 @@ static int idecimation = DEFAULT_DECIMATION;
 static int width = 320;
 static int height = 240;
 static char *filename = "default.jpg";
+static int use_file = 0;
 static int debug = 0;
+static int http = 0;
 static int ways_to_leave_your_lover = 50;
 #ifdef JPEG
 static int jpeg = 1, jpeg_quality = 50;
@@ -65,17 +67,17 @@ public:
    if (debug) { cout << "Bits per Pixel is " << ibpp << NL; }
  }
  
- // 480 is apparently a maximum width
+ // 640 is apparently a maximum width
  void set_width (int q)
- { if (q > 480 || q <  0)
+ { if (q > 640 || q <  0)
    { q = width; }
    width = q; 
    if (debug) { cout << "Width is " << width << NL; }
  }
 
- // 640 is apparently a maximum height
+ // 480 is apparently a maximum height
  void set_height (int q)
- { if (q > 640 || q <  0)
+ { if (q > 480 || q <  0)
    { q = height; }
    height = q; 
    if (debug) { cout << "Height is " << height << NL; }
@@ -91,7 +93,8 @@ public:
 
  // Filename
  void set_file (char *f)
- { filename = f; 
+ { filename = f;
+   use_file = 1; 
    if (debug) { cout << "Output file is " << filename << NL; }
  }
 
@@ -137,6 +140,16 @@ public:
    debug = q; 
    if (debug) { cout << "Debugging is " << debug << NL; }
  }
+
+ // 0 to turn off HTTP support
+ // 1 to turn on HTTP support
+ void set_http (int q)
+ { if (q != 0 && q != 1)
+   { q = http; }
+   http = q; 
+   if (debug) { cout << "HTTP Mode is " << debug << NL; }
+ }
+
 
  //automatically adjust brightness and color balance on startup?  
  //1=yes, 0=no
@@ -227,10 +240,15 @@ public:
 
 #ifdef JPEG
   if (jpeg)
-    //write_jpeg(stdout, scan, width, height, jpeg_quality);
-    out = fopen(filename, "w");
-    write_jpeg(out, scan, width, height, jpeg_quality);
-    fclose(out);
+    if(use_file)
+    { out = fopen(filename, "w");
+      write_jpeg(out, scan, width, height, jpeg_quality);
+      fclose(out);
+    }
+    else
+    { if(http)
+      { cout << "Content-type: image/jpeg\n\n"; }
+      write_jpeg(stdout, scan, width, height, jpeg_quality); }
   #else
 #endif
 //    write_ppm(stdout, scan, width, height);
@@ -294,6 +312,9 @@ MyClass::set_port(int q)
 
 void 
 MyClass::set_debug(int q)
+
+void 
+MyClass::set_http(int q)
 
 void 
 MyClass::set_file(char *f)

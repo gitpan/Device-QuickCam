@@ -1,4 +1,4 @@
-Device/QuickCam version 0.01
+Device/QuickCam version 0.02
 ============================
 
 The README is used to introduce the module and provide instructions on
@@ -43,6 +43,21 @@ SYNOPSIS
    $cam->grab(); #Grab it
  }
 
+ #HTTP Example
+
+ use Device::QuickCam;
+
+ my $cam = Device::QuickCam->new();
+ $cam->set_quality(100);
+ $cam->set_bpp(32);
+ $cam->set_width(640);
+ $cam->set_height(480);
+ #No file set - dump to STDOUT
+ $cam->set_http(1);
+ #Enable HTTP Support
+ $cam->grab();
+ #This dumps JPEG Data to STDOUT
+ 
 DESCRIPTION
 This module allows access to the Connectix/Logitech QuickCam. This
 module uses libcqcam and expects the user to play around with it.
@@ -124,6 +139,7 @@ FUNCTIONS
 
  set_file(string)
  This functions allows you to set a filename for output.
+ By not setting a filename, you force output to STDOUT.
 
 EXPORT
 None by default.
